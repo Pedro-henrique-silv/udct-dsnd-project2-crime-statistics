@@ -28,14 +28,15 @@ def run_spark_job(spark):
     # TODO Create Spark Configuration
     # Create Spark configurations with max offset of 200 per trigger
     # set up correct bootstrap server and port
-    df = spark \ 
+    df = spark \
         .readStream \
         .format("kafka") \
         .option("kafka.bootstrap.servers", "localhost:9092") \
-        .option("subscribe", "com.udacity.police-calls") \ 
-        .option("startingOffsets", "earliest") \ 
-        .option("maxOffsetsPerTrigger", "200") \ 
-        .option("stopGracefullyOnShutdown", "true")
+        .option("subscribe", "com.udacity.dsnd.police-calls") \
+        .option("startingOffsets", "earliest") \
+        .option("maxOffsetsPerTrigger", 200) \
+        .option("maxRatePerPartition",200) \
+        .option("stopGracefullyOnShutdown", "true") \
         .load() 
 
     # Show schema for the incoming resources for checks
@@ -69,7 +70,7 @@ def run_spark_job(spark):
     query = agg_df \
             .writeStream \
             .trigger(processingTime="10 seconds") \
-            .outputMode("Complete") \ 
+            .outputMode("Complete") \
             .format("console") \
             .option("truncate", "false") \
             .start()
@@ -92,7 +93,7 @@ def run_spark_job(spark):
     join_query = agg_df.join(radio_code_df, "disposition") \
                 .writeStream \
                 .trigger(processingTime="10 seconds") \
-                .outputMode("Complete") \ 
+                .outputMode("Complete") \
                 .format("console") \
                 .option("truncate", "false") \
                 .start()
