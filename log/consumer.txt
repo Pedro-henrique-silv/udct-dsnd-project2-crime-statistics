@@ -1,0 +1,22 @@
+Try 1:
+root@168f21ef3f39:/home/workspace# /usr/bin/kafka-consumer-console
+bash: /usr/bin/kafka-consumer-console: No such file or directory
+
+
+Try 2:
+root@168f21ef3f39:/home/workspace# kafka-console-consumer --topic com.udacity.dsnd.police-calls --bootstrap-server 9092 --from-beginning
+[2020-11-29 14:11:35,507] ERROR Unknown error when running consumer:  (kafka.tools.ConsoleConsumer$)
+org.apache.kafka.common.KafkaException: Failed to construct kafka consumer
+        at org.apache.kafka.clients.consumer.KafkaConsumer.<init>(KafkaConsumer.java:805)
+        at org.apache.kafka.clients.consumer.KafkaConsumer.<init>(KafkaConsumer.java:652)
+        at kafka.tools.ConsoleConsumer$.run(ConsoleConsumer.scala:67)
+        at kafka.tools.ConsoleConsumer$.main(ConsoleConsumer.scala:54)
+        at kafka.tools.ConsoleConsumer.main(ConsoleConsumer.scala)
+Caused by: org.apache.kafka.common.config.ConfigException: Invalid url in bootstrap.servers: 9092
+        at org.apache.kafka.clients.ClientUtils.parseAndValidateAddresses(ClientUtils.java:54)
+        at org.apache.kafka.clients.consumer.KafkaConsumer.<init>(KafkaConsumer.java:712)
+        ... 4 more
+
+Try 3:
+root@168f21ef3f39:/home/workspace# kafka-console-consumer --topic com.udacity.dsnd.police-calls --bootstrap-server localhost:9092 --from-beginning
+[2020-11-29 14:17:04,562] WARN [Consumer clientId=consumer-1, groupId=console-consumer-32710] Connection to node 0 (168f21ef3f39/172.18.0.2:9092) could not be established. Broker may not be available. (org.apache.kafka.clients.NetworkClient)
